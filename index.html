@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="P3X Roll Game - The first P3X dapp">
+	<meta name="author" content="dav">
+	<link rel="icon" type="image/webp" href="/icon.webp">
+  
+	<title>P3XRoll</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link href="/css/narrow-jumbotron.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/13.1.3/nouislider.css" />
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/13.1.3/nouislider.js"></script>
+	<script src="/p3xroll.js"></script>
+</head>
+<body style="background-color:#000000;">
+ <header style="text-align:center">
+		<a style="color:#28a745" href="http://playslots.stronghand.me" target="_blank"><b>+++ NEW RELEASE: Slots +++</b></a>
+</header>
+    <div class="container-fluid">
+	<div class="row marketing" style="color:white; text-align:center">
+		<div class="col-12">
+			<h1>P3X<span style="color:#28a745">Roll</span></h1>
+		</div>
+	</div>
+	<div class="row marketing" style="color:white; text-align:center">
+		<div class="col-6">
+			<h3 id="totalrolls">---</h3>
+			Games played
+		</div>
+		<div class="col-6">
+			<h3 id="sharesminedpercent">---</h3>
+			Shares mined
+		</div>
+	</div>
+	<div class="row marketing" style="color:white;">
+	<div class="col-lg-6">
+	<div class="row marketing" style="color:white; text-align:center">
+		<div class="col-12">
+			<h2 id="slider"></h2>
+		</div>
+	  </div>
+	  <br>
+	  <div class="row marketing" style="color:white;">
+        <div class="col-6 col-xs-6 col-sm-6 col-md-6">
+			<h4>Win chance</h4>
+			<h4>Mining size</h4>
+			<h4>Bet size (in P3X)</h4>
+		</div>
+        <div class="col-6 col-xs-6 col-sm-6 col-md-6" style="text-align:right">
+			<h4 id="chance"></h4>
+			<h4 id="mining"></h4>
+			<input id="wager" type="number" min="1" value="1" style="text-align:center" onchange="validate()" oninput="calcProfit()">
+		</div>
+	  </div>
+	  <div class="row marketing">
+        <div class="col-6 col-xs-6 col-sm-6 col-md-6" style="color:white;">
+			<h4>Roll under</h4>
+			<h4>For a profit of</h4>
+		</div>
+		<div class="col-6 col-xs-6 col-sm-6 col-md-6" style="color:#28a745; text-align:right">
+			<h4 id="rollunder"></h4>
+			<h4 id="potentialprofit"></h4>
+		</div>
+	  </div>
+	  <div class="row marketing">
+        <div class="col-12">
+			<p id="waiting" style="display: none; text-align:center"><b>Waiting for transaction...</b></p>
+			<p id="gif"></p>
+			<p id="button1"></p>
+			<p id="button2"></p>
+			<p id="button3"></p>
+		</div>
+	  </div>
+	  <div class="row marketing" style="color:white; text-align:center">
+		<div class="col-12">
+			<p>Account: <span id="playeraddress"></span>
+			 | 
+			 Balance: <span id="ethbalance"></span> - <span id="p3xbalance"></span>
+			<br>
+			   <span id="vault"></span>
+			 | <span id="shares"></span>
+			 | <span id="dividends"></span>
+			</p>
+			<p id="button4"></p>
+			<p id="button5"></p>
+		</div>
+	  </div>
+	</div>
+	<div class="col-lg-6">
+	<div class="row marketing" style="color:white">
+		<div class="col-12">
+			<div class="accordion" id="accordionExample">
+				<div class="card" style="background-color:gray; border: none;">
+					<div class="card-header" id="headingZero">
+						<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
+						Last Rolls
+						</button>
+					</div>
+					<div id="collapseZero" class="collapse show" aria-labelledby="headingZero" data-parent="#accordionExample" style="background-color:#000000;">
+					</div>
+				</div>
+				<div class="card" style="background-color:gray; border: none;">
+					<div class="card-header" id="headingOne">
+						<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+						How to play
+						</button>
+					</div>
+					<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample" style="background-color:#000000;">
+						1) Adjust the slider to change your win chance.
+						<br>
+						2) Set your bet size (in P3X).
+						<br>
+						3) Click ROLL and wait until the transaction confirms.
+						<br>
+						4) Click VALIDATE to validate your roll. 
+						<br>
+						5) If the result of the roll is lower than your 'Roll under' number, you win!
+					</div>
+				</div>
+				<div class="card" style="background-color:gray; border: none;">
+					<div class="card-header" id="headingTwo">
+						<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+						Becoming a shareholder
+						</button>
+					</div>
+					<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample" style="background-color:#000000;">
+						-> The contract will accrue dividends in ETH from the P3X that is held inside the contract.
+						<br>
+						-> Become a shareholder to secure yourself a portion of these dividends.
+						<br>
+						-> You earn shareholder tokens by simply playing the game.
+						<br>
+						-> Fund the pot to mine additional shareholder tokens (1 P3X = 0.95 Shares).
+						<br>
+						<br>
+						<div class="input-group">
+							<input type="number" class="form-control" id="fundpot" placeholder="funding amount (P3X)">
+							<div class="input-group-append">
+							<button type="button" class="btn btn-dark" onClick="fundPot()">FUND POT</button>
+							</div>
+						</div>
+						<br>
+						<span id="tobemined"></span>/20k Shareholder tokens have been mined so far.
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	  <footer class="footer" style="text-align:center">
+		<a style="color:#28a745" href="http://playslots.stronghand.me" target="_blank"><b>Play Slots</b></a>
+		 | <a style="color:#28a745" href="https://sacrific3d.stronghand.me" target="_blank"><b>Play Sacrific3D</b></a>
+		 | <a style="color:#28a745" href="https://www.decentralized3d.com/" target="_blank"><b>More P3D dapps</b></a>
+		 | <a style="color:#28a745" href="http://getp3x.com/?mn=0x1EB2acB92624DA2e601EEb77e2508b32E49012ef" target="_blank"><b>Buy P3X</b></a>
+		 | <a style="color:#28a745" href="https://etherscan.io/address/0x59891b95010267F7A3666dcB3221059a73E11AD1" target="_blank">Contract by dav</a>
+	  </footer>
+</body>
+<script>
+var slider = document.getElementById('slider');
+
+noUiSlider.create(slider, {
+    start: [50],
+	padding: [1, 2],
+	step: 1,
+    range: {
+        'min': 0,
+        'max': 100
+    },
+	pips: {
+        mode: 'positions',
+        values: [0, 25, 50, 75, 100],
+        density: 5,
+        stepped: true
+    }
+});
+
+var chance = document.getElementById('chance');
+var rollunder = document.getElementById('rollunder');
+var potentialprofit = document.getElementById('potentialprofit');
+var mining = document.getElementById('mining');
+var wager = document.getElementById('wager');
+let guard = false;
+
+slider.noUiSlider.on('update', function (values, handle) {
+	chance.innerHTML = values[handle] + ' %';
+	rollunder.innerHTML = parseInt(values[handle]) + 1;
+	
+	calcProfit()
+});
+
+function validate() {
+	if(wager.value < 1) {
+		wager.value = 1;
+		calcProfit();
+	}
+}
+
+function calcProfit() {
+if(guard){return;};
+	let profit = wager.value * 99 / slider.noUiSlider.get() - wager.value;
+	if(profit > maximumProfitETH) {
+		slider.noUiSlider.updateOptions({
+			padding: [parseInt(slider.noUiSlider.get()) + 1, 2],
+		});
+	} else {
+		guard = true;
+		slider.noUiSlider.updateOptions({
+			padding: [1, 2]
+		});
+		potentialprofit.innerHTML = profit.toFixed(4) +  ' P3X';
+		mining.innerHTML = profit < wager.value ? (profit * 0.95).toFixed(4) + ' Shares' : (wager.value * 0.95).toFixed(4) + ' Shares';
+		guard = false;
+	}
+}
+
+</script>
+</html>
